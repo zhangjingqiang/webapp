@@ -26,3 +26,8 @@ $ docker-compose run --rm webapp bash -c "RAILS_ENV=test bin/rake"
 $ docker-compose exec webapp bin/rails c
 ```
 
+## Push to Docker Hub
+
+```
+$ ./push.sh
+```
