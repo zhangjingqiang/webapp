@@ -249,7 +249,23 @@ minikube
 
 https://kubernetes.io/docs/getting-started-guides/aws/
 
-Because of the kubernetes version trouble, can't do it now.
+Add to `~/.zshrc` and source it:
+```
+export NUM_NODES=2
+export NODE_SIZE=t2.small
+```
+
+```
+$ export KUBERNETES_PROVIDER=aws; curl -sS https://get.k8s.io | bash
+# Check `~/.kube/config` if added `aws_kubernetes-basic-auth` name
+$ kubectl config current-context
+aws_kubernetes
+```
+
+Dashboard
+https://52.32.34.173/ui
+
+Because of the kubernetes version trouble, can't do this step now.
 
 ## Running the Templates in Production
 
@@ -281,6 +297,34 @@ $ kubectl delete -f kube/deployments/webapp-deployment.yaml
 $ kubectl create -f kube/deployments/webapp-deployment.yaml
 $ kubectl describe service webapp
 $ kubectl describe deployment webapp
-$ curl -H "Content-Type: application/json" -X POST -d '{"title":"my first article","body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit..."}' http://http://192.168.99.100:30447/articles
-{"id":1,"title":"my first article","body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit...","created_at":"2017-05-03T09:48:20.539Z","updated_at":"2017-05-03T09:48:20.539Z"}%
+
+$ curl -H "Content-Type: application/json" -X POST -d '{"title":"my first article","body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit..."}' http://a333dae17845a11e6b47b06103f11903-585648094.us-west-2.elb.amazonaws.com/articles
+{"id":1,"title":"my first article","body":"Lorem ipsum dolor sit amet,consectetur adipiscing elit...","created_at":"2016-09-27T03:07:36.706Z","updated_at":"2016-09-27T03:07:36.706Z"}%
+```
+
+## Adding Persistence
+
+```
+$ aws ec2 create-volume --region us-west-2 --availability-zone us-west-2a --size 10 --volume-type gp2
+Add `awsElasticBlockStore` to kube/deployments/postgres-deployment.yaml
+$ kubectl delete -f kube/deployments/postgres-deployment.yaml
+$ kubectl create -f kube/deployments/postgres-deployment.yaml
+$ kubectl describe rs postgres
+
+$ aws ec2 describe-volumes --volume-ids vol-fe268f4a --region us-west-2
+
+$ kubectl delete job/setup
+$ kubectl create -f kube/jobs/setup-job.yaml
+$ Pods=$(kubectl get Pods --selector=job-name=setup --output=jsonpath={.items..metadata.name})
+$ kubectl logs $Pods
+
+$ curl -H "Content-Type: application/json" -X POST -d '{"title":"my first article","body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit..."}' http://a333dae17845a11e6b47b06103f11903-585648094.us-west-2.elb.amazonaws.com/articles
+{"id":1,"title":"my first article","body":"Lorem ipsum dolor sit amet,consectetur adipiscing elit...","created_at":"2016-09-27T03:07:36.706Z","updated_at":"2016-09-27T03:07:36.706Z"}%
+
+# Confirm persistence
+$ kubectl delete -f kube/deployments/postgres-deployment.yaml
+$ kubectl create -f kube/deployments/postgres-deployment.yaml
+# Notice that don't setup!
+$ curl http://a333dae17845a11e6b47b06103f11903-585648094.us-west-2.elb.amazonaws.com/articles
+[{"id":1,"title":"my first article","body":"Lorem ipsum dolor sit amet,consectetur adipiscing elit...","created_at":"2016-09-27T03:07:36.706Z","updated_at":"2016-09-27T03:07:36.706Z"}]%
 ```
