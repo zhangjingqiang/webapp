@@ -81,6 +81,7 @@ test:
 #
 production:
   <<: *default
+  host: webapp-postgres.ci8dl5hkjplf.us-east-1.rds.amazonaws.com
   database: webapp_production
   username: webapp
   password: mysecretpassword
