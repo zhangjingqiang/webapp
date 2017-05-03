@@ -255,4 +255,32 @@ Because of the kubernetes version trouble, can't do it now.
 
 ```
 $ docker-compose run --rm webapp bin/rake secret RAILS_ENV=production
+# Change
+config/secrets.yml
+config/database.yml
+$ kubectl delete -f kube/deployments/postgres-deployment.yaml
+$ kubectl create -f kube/deployments/postgres-deployment.yaml
+
+$ touch setup.production.sh
+$ chmod +x setup.production.sh
+
+$ git add .
+$ git commit -m 'add production templates'
+$ ./push.sh
+
+$ git rev-parse --short HEAD
+$ docker images
+# Change new tag
+kube/jobs/setup-job.yaml
+$ kubectl delete -f kube/jobs/setup-job.yaml
+$ kubectl create -f kube/jobs/setup-job.yaml
+
+# Change new tag
+kube/deployments/webapp-deployment.yaml
+$ kubectl delete -f kube/deployments/webapp-deployment.yaml
+$ kubectl create -f kube/deployments/webapp-deployment.yaml
+$ kubectl describe service webapp
+$ kubectl describe deployment webapp
+$ curl -H "Content-Type: application/json" -X POST -d '{"title":"my first article","body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit..."}' http://http://192.168.99.100:30447/articles
+{"id":1,"title":"my first article","body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit...","created_at":"2017-05-03T09:48:20.539Z","updated_at":"2017-05-03T09:48:20.539Z"}%
 ```
