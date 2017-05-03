@@ -27,7 +27,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: zhangjingqiang/webapp:29600f4
+      - image: zhangjingqiang/webapp:c1cffaa
         name: webapp
         env:
         - name: PASSENGER_APP_ENV
