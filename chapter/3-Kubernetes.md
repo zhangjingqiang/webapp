@@ -333,4 +333,27 @@ $ curl http://a333dae17845a11e6b47b06103f11903-585648094.us-west-2.elb.amazonaws
 
 ```
 $ docker-compose run --rm webapp bin/rails g migration AddSlugToArticles slug:string
+$ git add -A
+$ git commit -m 'add slug field to articles'
+$ ./push.sh
+$ git rev-parse --short HEAD
+# Change new tag
+kube/jobs/setup-job.yaml
+kube/deployments/webapp-deployment.yaml
+
+$ kubectl delete jobs/setup
+$ kubectl create -f kube/jobs/setup-job.yaml
+$ Pods=$(kubectl get Pods --selector=job-name=setup --output=jsonpath={.items..metadata.name})
+$ kubectl logs $Pods
+
+$ kubectl apply -f kube/deployments/webapp-deployment.yaml
+
+$ curl -H "Content-Type: application/json" -X POST -d '{"title":"my second article","body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit..."}' http://a333dae17845a11e6b47b06103f11903-585648094.us-west-2.elb.amazonaws.com/articles
+{"id":34,"title":"my second article","body":"Lorem ipsum dolor sit amet, consectetur adipiscing elit...","created_at":"2016-09-28T03:20:37.427Z", "updated_at":"2016-09-28T03:20:37.427Z","slug":"my-second-article"}%
+```
+
+## Automation Scripts
+
+```
+$ kubectl set image deployment my-deployment container=image:new-tag
 ```
