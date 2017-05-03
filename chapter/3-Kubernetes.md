@@ -328,3 +328,9 @@ $ kubectl create -f kube/deployments/postgres-deployment.yaml
 $ curl http://a333dae17845a11e6b47b06103f11903-585648094.us-west-2.elb.amazonaws.com/articles
 [{"id":1,"title":"my first article","body":"Lorem ipsum dolor sit amet,consectetur adipiscing elit...","created_at":"2016-09-27T03:07:36.706Z","updated_at":"2016-09-27T03:07:36.706Z"}]%
 ```
+
+## Updating the Application
+
+```
+$ docker-compose run --rm webapp bin/rails g migration AddSlugToArticles slug:string
+```
