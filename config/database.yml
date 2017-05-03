@@ -83,4 +83,4 @@ production:
   <<: *default
   database: webapp_production
   username: webapp
-  password: <%= ENV['WEBAPP_DATABASE_PASSWORD'] %>
+  password: mysecretpassword
