@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
       - name: setup
-        image: zhangjingqiang/webapp:299c510
+        image: zhangjingqiang/webapp:LAST_COMMIT
         command: ["/bin/bash", "./setup.production.sh"]
         env:
         - name: PASSENGER_APP_ENV
