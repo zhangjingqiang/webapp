@@ -78,8 +78,35 @@ $ ssh ec2-user@184.72.110.253 -i Jenkins.pem
 # sudo su
 # cat /var/lib/jenkins/secrets/initialAdminPassword
 # exit
+```
 
+## Configuring a Job for Kubernetes
+
+```
 $ git add .
 $ git commit -m 'fix db host for kubernetes'
+$ git push origin master
+```
+
+### Push to Deploy
+
+GitHub repository -> Settings -> Integratin & Services -> Add service -> Jenkins(GitHub plug-in)
+
+Jenkins hook url:
+http://184.72.110.253:8080/github-webhook/
+
+### Running the Test Suite
+
+```
+$ docker-compose run --rm webapp bin/rails db:create RAILS_ENV=test
+$ docker-compose run --rm webapp bin/rails db:migrate RAILS_ENV=test
+$ docker-compose run --rm webapp bin/rake RAILS_ENV=test
+
+$ touch docker-compose.test.yml
+$ touch setup.test.sh
+$ chmod +x setup.test.sh
+
+$ git add -A
+$ git commit -m 'Add testing stuff'
 $ git push origin master
 ```
