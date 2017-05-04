@@ -1,3 +1,6 @@
+~/.kube/config
+
+```
 apiVersion: v1
 clusters:
 - cluster:
@@ -22,3 +25,4 @@ users:
   user:
     password: XXXXXXXXXXXXXXXX
     username: admin
+```
