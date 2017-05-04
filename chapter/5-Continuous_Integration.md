@@ -109,4 +109,8 @@ $ chmod +x setup.test.sh
 $ git add -A
 $ git commit -m 'Add testing stuff'
 $ git push origin master
+
+$ git add .
+$ git commit -f 'Fix broken test'
+$ git push origin master
 ```

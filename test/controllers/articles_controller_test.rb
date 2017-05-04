@@ -15,7 +15,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
       post articles_url, params: { article: { body: @article.body, title: @article.title } }, as: :json
     end
 
-    assert_response 301
+    assert_response 201
   end
 
   test "should show article" do
