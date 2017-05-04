@@ -114,3 +114,7 @@ $ git add .
 $ git commit -f 'Fix broken test'
 $ git push origin master
 ```
+
+## Configuring a Job for ECS
+
+The same process as `Configuring a Job for Kubernetes`.
