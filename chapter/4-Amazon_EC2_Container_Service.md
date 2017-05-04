@@ -109,3 +109,25 @@ $ aws ec2 describe-instances --instance-ids i-69f4a17f --query="Reservations[0].
 
 $ curl -I http://54.164.16.149/articles
 ```
+
+## Creating a Service for Our Application
+
+```
+$ touch app/controllers/pages_controller.rb
+
+Create Load Balancer
+$ aws elb create-load-balancer --load-balancer-name webapp-load-balancer --listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP, InstancePort=80" --subnets subnet-3a09f717 subnet-e0906cbb --security-groups sg-bbe6b3c1
+
+Stop Application
+$ aws ecs list-tasks --cluster ecs-cluster
+$ aws ecs stop-task --task arn:aws:ecs:us-east-1:586421825777:task/1133a3a7-811c-4672-ab95-2c343930825c --cluster ecs-cluster
+$ mkdir ecs/services
+
+Create Service
+$ aws ecs create-service --generate-cli-skeleton > ecs/services/webapp-service.json --cluster ecs-cluster
+$ aws ecs create-service --cli-input-json file://ecs/services/webapp-service.json
+
+$ curl -I webapp-load-balancer-1711291190.us-east-1.elb.amazonaws.com/articles
+
+$ curl -H "Content-Type: application/json" -X POST -d '{"title":"the title","body":"The body"}' http://webapp-load-balancer-1711291190.us-east-1.elb.amazonaws.com/articles
+```
