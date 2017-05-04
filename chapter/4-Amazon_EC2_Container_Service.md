@@ -131,3 +131,18 @@ $ curl -I webapp-load-balancer-1711291190.us-east-1.elb.amazonaws.com/articles
 
 $ curl -H "Content-Type: application/json" -X POST -d '{"title":"the title","body":"The body"}' http://webapp-load-balancer-1711291190.us-east-1.elb.amazonaws.com/articles
 ```
+
+## Running Updates to Our Application
+
+```
+$ mkdir ecs/deploy
+$ touch ecs/deploy/push.sh
+$ touch ecs/deploy/migrate.sh
+$ chmod +x ecs/deploy/*
+
+$ git add -A
+$ git commit -m 'add deploy scripts for ecs'
+
+$ ./ecs/deploy/push.sh
+$ ./ecs/deploy/migrate.sh
+```

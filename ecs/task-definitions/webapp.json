@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "webapp",
-            "image": "zhangjingqiang/webapp:ecs-91aed64",
+            "image": "zhangjingqiang/webapp:LAST_COMMIT",
             "cpu": 500,
             "memory": 500,
             "portMappings": [
