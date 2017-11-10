@@ -45,7 +45,7 @@ spec:
   template:
     metadata:
       labels:
-app: webapp
+        app: webapp
         tier: frontend
     spec:
       containers:
