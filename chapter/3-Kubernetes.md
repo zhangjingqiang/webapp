@@ -144,7 +144,7 @@ spec:
   template:
     metadata:
       labels:
-app: webapp
+        app: webapp
         tier: postgres
     spec:
       containers:
